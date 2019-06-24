@@ -35,7 +35,7 @@ class XssScan():
         # 判断是否get参数
         # https://portswigger.net/burp/extender/api/burp/IScannerInsertionPoint.html
         # insertionPoint支持的方法查看这里
-        if self.insertionPoint.getInsertionPointType() != 0:
+        if self.insertionPoint.getInsertionPointType() not in [0, 1]:
             return
 
         # 获取响应的信息

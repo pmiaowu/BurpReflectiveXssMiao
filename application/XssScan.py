@@ -129,6 +129,7 @@ class XssScan():
 
                     print('')
                     print(u'已确定拥有反射xss漏洞: %s' % (req_url))
+                    print(u'请求方法: %s' % (new_req_method))
                     print(u'参数: %s=%s' % (self.insertionPoint.getInsertionPointName(), payload))
                     print(u'位置_1: %s' % (html))
                     print(u'位置_2: %s' % (html.replace(XssConfig.xss_test_payload, payload)))
@@ -163,6 +164,7 @@ class XssScan():
 
                     print('')
                     print(u'已确定拥有反射xss漏洞: %s' % (req_url))
+                    print(u'请求方法: %s' % (new_req_method))
                     print(u'参数: %s=%s' % (self.insertionPoint.getInsertionPointName(), payload))
                     print('===================================')
                     print('')

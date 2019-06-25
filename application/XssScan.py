@@ -118,8 +118,9 @@ class XssScan():
                 # 判断payload是否给转义了
                 if new_res_bodys.find(helpers.addslashes(payload)) >= 1:
                     break
-
+ 
                 if new_res_bodys.find(payload) >= 1:
+                    
                     # 获取请求的一些信息：请求头，请求内容，请求方法，请求参数
                     new_analyzed_request, new_req_headers, new_req_method, new_req_parameters = self.getRequestInfo(checkRequest)
                     # 获取请求包返回的服务信息
@@ -133,8 +134,6 @@ class XssScan():
                     print(u'已确定拥有反射xss漏洞: %s' % (req_url))
                     print(u'请求方法: %s' % (new_req_method))
                     print(u'参数: %s=%s' % (self.insertionPoint.getInsertionPointName(), payload))
-                    print(u'位置_1: %s' % (html))
-                    print(u'位置_2: %s' % (html.replace(XssConfig.xss_test_payload, payload)))
                     print('===================================')
                     print('') 
                     break

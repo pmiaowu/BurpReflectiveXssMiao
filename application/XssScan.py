@@ -150,10 +150,10 @@ class XssScan():
                 checkRequest = self.insertionPoint.buildRequest(payload)
 
                 # 发送请求,获取响应
-                self.checkRequestResponse = self._callbacks.makeHttpRequest(self.baseRequestResponse.getHttpService(), checkRequest)
+                checkRequestResponse = self._callbacks.makeHttpRequest(self.baseRequestResponse.getHttpService(), checkRequest)
 
                 # 获取响应的信息
-                new_res_headers,new_res_status_code, res_stated_mime_type, new_res_bodys,  = self.getResponseInfo(self.checkRequestResponse.getResponse())
+                new_res_headers,new_res_status_code, res_stated_mime_type, new_res_bodys,  = self.getResponseInfo(checkRequestResponse.getResponse())
 
                 if new_res_bodys.find(payload) >= 1:
                     # 获取请求的一些信息：请求头，请求内容，请求方法，请求参数
@@ -163,6 +163,7 @@ class XssScan():
                     req_url = self.getRequestUrl(protocol, port, new_req_headers)
 
                     self.xssIssuePayload = payload
+                    self.checkRequestResponse = checkRequestResponse
 
                     print('')
                     print(u'已确定拥有反射xss漏洞: %s' % (req_url))

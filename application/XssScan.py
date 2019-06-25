@@ -6,6 +6,7 @@ import config.xss as XssConfig
 import bootstrap.helpers as helpers
 import re
 import sys
+import urllib
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -109,10 +110,10 @@ class XssScan():
                 checkRequest = self.insertionPoint.buildRequest(payload)
 
                 # 发送请求,获取响应
-                self.checkRequestResponse = self._callbacks.makeHttpRequest(self.baseRequestResponse.getHttpService(), checkRequest)
+                checkRequestResponse = self._callbacks.makeHttpRequest(self.baseRequestResponse.getHttpService(), checkRequest)
 
                 # 获取响应的信息
-                new_res_headers,new_res_status_code, res_stated_mime_type, new_res_bodys,  = self.getResponseInfo(self.checkRequestResponse.getResponse())
+                new_res_headers,new_res_status_code, res_stated_mime_type, new_res_bodys,  = self.getResponseInfo(checkRequestResponse.getResponse())
 
                 # 判断payload是否给转义了
                 if new_res_bodys.find(helpers.addslashes(payload)) >= 1:
@@ -126,6 +127,7 @@ class XssScan():
                     req_url = self.getRequestUrl(protocol, port, new_req_headers)
 
                     self.xssIssuePayload = payload
+                    self.checkRequestResponse = checkRequestResponse
 
                     print('')
                     print(u'已确定拥有反射xss漏洞: %s' % (req_url))
@@ -182,7 +184,7 @@ class XssScan():
                 self._helpers.analyzeRequest(self.baseRequestResponse).getUrl(),
                 [self._callbacks.applyMarkers(self.checkRequestResponse, requestHighlights, [])],
                 'ReflectiveXss',
-                self.insertionPoint.getInsertionPointName() + ' = ' + xssIssuePayload,
+                self.insertionPoint.getInsertionPointName() + ' = ' + urllib.quote_plus(xssIssuePayload, safe=""),
                 "High")]
 
     # 获取请求url

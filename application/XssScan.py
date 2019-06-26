@@ -96,48 +96,60 @@ class XssScan():
 
         for html in new_res_body_list:
             test_body = test_body.replace(html,'')
-        
-        # 确认加载的payload
-        xss_payload_list = []
-        xss_type = ''
-        if re.findall(XssConfig.xss_regex_3, self.new_res_bodys.encode('utf-8')):
-            xss_type = 'pseudo-protocol'
-            xss_payload_list = XssConfig.xss_payload_2
-        else:
-            xss_type = 'dom'
-            xss_payload_list = XssConfig.xss_payload_1
 
-        for payload in xss_payload_list:
-            checkRequest = self.insertionPoint.buildRequest(payload)
+            if html.find(XssConfig.xss_test_payload) <= 1:
+                continue
 
-            # 发送请求,获取响应
-            checkRequestResponse = self._callbacks.makeHttpRequest(self.baseRequestResponse.getHttpService(), checkRequest)
+            # 确认加载的payload
+            xss_payload_list = []
+            xss_type = ''
 
-            # 获取响应的信息
-            new_res_headers,new_res_status_code, res_stated_mime_type, new_res_bodys,  = self.getResponseInfo(checkRequestResponse.getResponse())
+            if len(re.findall(XssConfig.xss_regex_3, html)) >= 1:
+                xss_type = 'pseudo-protocol'
+                xss_payload_list = XssConfig.xss_payload_3
+            else:
+                xss_type = 'dom'
+                if len(re.findall(XssConfig.xss_regex_1, html)) >= 1:
+                    xss_payload_list = XssConfig.xss_payload_1
+                else:
+                    xss_payload_list = XssConfig.xss_payload_2
 
-            if xss_type == 'dom':
-                # 判断payload是否给转义了
-                if new_res_bodys.find(helpers.addslashes(payload)) >= 1:
+            for payload in xss_payload_list:
+                checkRequest = self.insertionPoint.buildRequest(payload)
+
+                # 发送请求,获取响应
+                checkRequestResponse = self._callbacks.makeHttpRequest(self.baseRequestResponse.getHttpService(), checkRequest)
+
+                # 获取响应的信息
+                new_res_headers,new_res_status_code, res_stated_mime_type, new_res_bodys,  = self.getResponseInfo(checkRequestResponse.getResponse())
+
+                if new_res_bodys.find(payload) >= 1:
+
+                    if xss_type == 'dom':
+                        # 判断payload是否给转义了
+                        if new_res_bodys.find(helpers.addslashes(payload)) >= 1:
+                            break
+                        
+                        # 判断是否给转成html实体
+                        if new_res_bodys.find(helpers.htmlspecialchars(payload, 'ENT_QUOTES')) >= 1:
+                            break
+
+                    # 获取请求的一些信息：请求头，请求内容，请求方法，请求参数
+                    new_analyzed_request, new_req_headers, new_req_method, new_req_parameters = self.getRequestInfo(checkRequest)
+                    # 获取请求包返回的服务信息
+                    host, port, protocol, is_https = self.getServerInfo(self.baseRequestResponse.getHttpService())
+                    req_url = self.getRequestUrl(protocol, port, new_req_headers)
+
+                    self.xssIssuePayload = payload
+                    self.checkRequestResponse = checkRequestResponse
+
+                    print('')
+                    print(u'已确定拥有反射xss漏洞: %s' % (req_url))
+                    print(u'请求方法: %s' % (new_req_method))
+                    print(u'参数: %s=%s' % (self.insertionPoint.getInsertionPointName(), payload))
+                    print('===================================')
+                    print('') 
                     break
-
-            if new_res_bodys.find(payload) >= 1:
-                # 获取请求的一些信息：请求头，请求内容，请求方法，请求参数
-                new_analyzed_request, new_req_headers, new_req_method, new_req_parameters = self.getRequestInfo(checkRequest)
-                # 获取请求包返回的服务信息
-                host, port, protocol, is_https = self.getServerInfo(self.baseRequestResponse.getHttpService())
-                req_url = self.getRequestUrl(protocol, port, new_req_headers)
-
-                self.xssIssuePayload = payload
-                self.checkRequestResponse = checkRequestResponse
-
-                print('')
-                print(u'已确定拥有反射xss漏洞: %s' % (req_url))
-                print(u'请求方法: %s' % (new_req_method))
-                print(u'参数: %s=%s' % (self.insertionPoint.getInsertionPointName(), payload))
-                print('===================================')
-                print('') 
-                break
 
         self.test_body = test_body
 
@@ -146,7 +158,7 @@ class XssScan():
          # 匹配所有其他的xss
         test_body = self.test_body.replace(XssConfig.xss_test_payload,'<xss>'+XssConfig.xss_test_payload+'</xss>')
         if len(re.findall(XssConfig.xss_regex_2, test_body.encode('utf-8'))) >= 1:
-            for payload in XssConfig.xss_payload_3:
+            for payload in XssConfig.xss_payload_4:
                 checkRequest = self.insertionPoint.buildRequest(payload)
 
                 # 发送请求,获取响应

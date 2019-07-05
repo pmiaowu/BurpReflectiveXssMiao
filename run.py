@@ -5,12 +5,13 @@ from burp import IBurpExtender
 from burp import IScannerCheck
 
 from application.XssScan import XssScan
+from application.tag import tag
 
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 NAME = u'反射型xss检测插件'
-VERSION = '1.0'
+VERSION = '1.0.1'
 
 class BurpExtender(IBurpExtender, IScannerCheck):
 
@@ -26,6 +27,10 @@ class BurpExtender(IBurpExtender, IScannerCheck):
 
         # 将自己注册为自定义扫描器检查
         callbacks.registerScannerCheck(self)
+
+        # 界面加载
+        self.tags = tag(self._callbacks, NAME)
+        self.tags.tagLoad()
 
         print(u'%s加载成功' % (NAME))
         print(u'版本: %s' % (VERSION))
@@ -43,7 +48,7 @@ class BurpExtender(IBurpExtender, IScannerCheck):
     # 主动扫描时，执行
     def doActiveScan(self, baseRequestResponse, insertionPoint):
         # xss扫描
-        XssScanClass = XssScan(self._callbacks, self._helpers, baseRequestResponse, insertionPoint)
+        XssScanClass = XssScan(self._callbacks, self._helpers, baseRequestResponse, insertionPoint, self.tags)
         XssScanClass.scan()
         return XssScanClass.CustomScanIssueExport()
 

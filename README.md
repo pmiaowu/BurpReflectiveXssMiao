@@ -18,6 +18,10 @@
 ![](./readme/images/1.png)
 ![](./readme/images/2.png)
 
+# 配置项
+
+![](./readme/images/13.png)
+
 # 测试代码
 
 ![](./readme/images/3.png)

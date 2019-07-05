@@ -13,19 +13,20 @@ sys.setdefaultencoding('utf8')
 
 class XssScan():
 
-    def __init__(self, _callbacks, _helpers, baseRequestResponse, insertionPoint):
+    def __init__(self, _callbacks, _helpers, baseRequestResponse, insertionPoint, tags):
         self._callbacks = _callbacks
         self._helpers  = _helpers
         self.baseRequestResponse = baseRequestResponse
         self.insertionPoint = insertionPoint
+        self.tags = tags
 
     def scan(self):
         # 获取请求的信息
         request = self.baseRequestResponse.getRequest()
         analyzedRequest, req_headers, req_method, req_parameters = self.getRequestInfo(request)
 
-        # 判断是否合法请求
-        if req_method not in XssConfig.method:
+        # 只允许白名单类型的请求进行xss注入
+        if self.insertionPoint.getInsertionPointType() not in self.tags.getScanTypeList():
             return
 
         # 判断当前请求包 参数是否为空

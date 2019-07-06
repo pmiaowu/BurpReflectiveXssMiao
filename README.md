@@ -2,7 +2,7 @@
 
 一个可怜兮兮还不知道自己唯一使命的Burpsuite插件 (°ー°〃)愣住
 
-此插件会检测所有的GET参数并且进行xss fuzz
+此插件会检测所有的GET/POST参数并且进行xss fuzz
 
 注意: 该插件只会在以下几个burp模块运行
 - Burp Scanner模块

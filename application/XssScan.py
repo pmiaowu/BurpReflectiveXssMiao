@@ -146,7 +146,9 @@ class XssScan():
 
                     print('')
                     print('===================================')
-                    print(u'已确定拥有反射xss漏洞: %s' % (req_url))
+                    print(u'你好呀~ (๑•̀ㅁ•́ฅ)喵~')
+                    print(u'这边检测到一处反射xss呢 喵~')
+                    print(u'漏洞url: %s' % (req_url))
                     print(u'请求方法: %s' % (new_req_method))
                     print(u'参数: %s=%s' % (self.insertionPoint.getInsertionPointName(), payload))
                     print('===================================')
@@ -181,7 +183,9 @@ class XssScan():
 
                     print('')
                     print('===================================')
-                    print(u'已确定拥有反射xss漏洞: %s' % (req_url))
+                    print(u'你好呀~ (๑•̀ㅁ•́ฅ)喵~')
+                    print(u'这边检测到一处反射xss呢 喵~')
+                    print(u'漏洞url: %s' % (req_url))
                     print(u'请求方法: %s' % (new_req_method))
                     print(u'参数: %s=%s' % (self.insertionPoint.getInsertionPointName(), payload))
                     print('===================================')

@@ -81,7 +81,7 @@ class XssScan():
         new_res_headers,new_res_status_code, res_stated_mime_type, new_res_bodys,  = self.getResponseInfo(checkRequestResponse.getResponse())
 
         # 判断payload是否出现过
-        if new_res_bodys.find(XssConfig.xss_test_payload) <= 0:
+        if new_res_bodys.find(XssConfig.xss_test_payload) <= -1:
             return False
 
         self.new_res_bodys = new_res_bodys
@@ -98,7 +98,7 @@ class XssScan():
         for html in new_res_body_list:
             test_body = test_body.replace(html,'')
 
-            if html.find(XssConfig.xss_test_payload) <= 1:
+            if html.find(XssConfig.xss_test_payload) <= -1:
                 continue
 
             # 确认加载的payload
@@ -124,15 +124,15 @@ class XssScan():
                 # 获取响应的信息
                 new_res_headers,new_res_status_code, res_stated_mime_type, new_res_bodys,  = self.getResponseInfo(checkRequestResponse.getResponse())
 
-                if new_res_bodys.find(payload) >= 1:
+                if new_res_bodys.find(payload) >= 0:
 
                     if xss_type == 'dom':
                         # 判断payload是否给转义了
-                        if new_res_bodys.find(helpers.addslashes(payload)) >= 1:
+                        if new_res_bodys.find(helpers.addslashes(payload)) >= 0:
                             break
                         
                         # 判断是否给转成html实体
-                        if new_res_bodys.find(helpers.htmlspecialchars(payload, 'ENT_QUOTES')) >= 1:
+                        if new_res_bodys.find(helpers.htmlspecialchars(payload, 'ENT_QUOTES')) >= 0:
                             break
 
                     # 获取请求的一些信息：请求头，请求内容，请求方法，请求参数
@@ -171,7 +171,7 @@ class XssScan():
                 # 获取响应的信息
                 new_res_headers,new_res_status_code, res_stated_mime_type, new_res_bodys,  = self.getResponseInfo(checkRequestResponse.getResponse())
 
-                if new_res_bodys.find(payload) >= 1:
+                if new_res_bodys.find(payload) >= 0:
                     # 获取请求的一些信息：请求头，请求内容，请求方法，请求参数
                     new_analyzed_request, new_req_headers, new_req_method, new_req_parameters = self.getRequestInfo(checkRequest)
                     # 获取请求包返回的服务信息

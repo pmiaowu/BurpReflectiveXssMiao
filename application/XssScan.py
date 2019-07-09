@@ -105,7 +105,7 @@ class XssScan():
             xss_payload_list = []
             xss_type = ''
 
-            if len(re.findall(XssConfig.xss_regex_3, html)) >= 1:
+            if len(re.findall(XssConfig.xss_regex_3, html)) >= 1 or len(re.findall(XssConfig.xss_regex_4, html)) >= 1:
                 xss_type = 'pseudo-protocol'
                 xss_payload_list = XssConfig.xss_payload_3
             else:

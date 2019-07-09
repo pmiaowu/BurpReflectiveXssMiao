@@ -22,6 +22,7 @@ xss_regex_2 = r'<xss>.*?</xss>'
 
 # 判断payload点是否在可使用js伪协议的地方
 xss_regex_3 = r'<a.*?href="'+xss_test_payload+'".*?>'
+xss_regex_4 = r'<iframe.*?src="'+xss_test_payload+'".*?>'
 
 # xss测试脚本
 

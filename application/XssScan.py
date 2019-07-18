@@ -197,12 +197,10 @@ class XssScan():
         xssIssuePayload = getattr(self, "xssIssuePayload", None)
         if xssIssuePayload != None:
             # 报告这件事
-            # 获取请求中有效负载的偏移量，以便在ui中突出显示
-            requestHighlights = [self.insertionPoint.getPayloadOffsets(xssIssuePayload)]
             return [CustomScanIssue(
                 self.baseRequestResponse.getHttpService(),
                 self._helpers.analyzeRequest(self.baseRequestResponse).getUrl(),
-                [self._callbacks.applyMarkers(self.checkRequestResponse, requestHighlights, [])],
+                [self._callbacks.applyMarkers(self.checkRequestResponse, None, [])],
                 'ReflectiveXss',
                 self.insertionPoint.getInsertionPointName() + ' = ' + urllib.quote_plus(xssIssuePayload, safe=""),
                 "High")]

@@ -11,7 +11,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 NAME = u'反射型xss检测插件'
-VERSION = '1.0.4'
+VERSION = '1.0.5'
 
 class BurpExtender(IBurpExtender, IScannerCheck):
 
@@ -53,20 +53,15 @@ class BurpExtender(IBurpExtender, IScannerCheck):
         return XssScanClass.CustomScanIssueExport()
 
     def consolidateDuplicateIssues(self, existingIssue, newIssue):
-  
         # 当为同一个URL报告多个问题时，将调用此方法
         # 路径由相同的扩展提供检查。我们从中返回的值
-        # 方法确定打嗝如何/是否合并多个问题
+        # 我们将通过这个方法来确定是否合并多个问题
         # 防止重复发送
         #
-        # 由于问题的名称足以确定我们的问题是不同的，
-        # 如果两个问题具有相同的名称，则只报告现有问题
+        # 由于问题的细节足以确定我们的问题是不同的，
+        # 如果两个问题具有相同的细节，则只报告现有问题
         # 否则报告两个问题
-
-        # 例如：http://127.0.0.1/test_xss.php?parameter_1 = 123&parameter_2 = 444 都有xss
-        # 那么调用这个方法，问题活动哪里就只会报告一次
-
-        if existingIssue.getIssueName() == newIssue.getIssueName():
+        if existingIssue.getIssueDetail() == newIssue.getIssueDetail():
             return -1
 
         return 0

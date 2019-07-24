@@ -146,7 +146,7 @@ class XssScan():
 
                     print('')
                     print('===================================')
-                    print(u'你好呀~ (๑•̀ㅁ•́ฅ)喵~')
+                    print(u'你好呀~ (≧ω≦*)喵~')
                     print(u'这边检测到一处反射xss呢 喵~')
                     print(u'漏洞url: %s' % (req_url))
                     print(u'请求方法: %s' % (new_req_method))
@@ -183,7 +183,7 @@ class XssScan():
 
                     print('')
                     print('===================================')
-                    print(u'你好呀~ (๑•̀ㅁ•́ฅ)喵~')
+                    print(u'你好呀~ (≧ω≦*)喵~')
                     print(u'这边检测到一处反射xss呢 喵~')
                     print(u'漏洞url: %s' % (req_url))
                     print(u'请求方法: %s' % (new_req_method))

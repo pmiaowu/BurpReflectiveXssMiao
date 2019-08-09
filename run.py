@@ -7,6 +7,8 @@ from burp import IScannerCheck
 from application.XssScan import XssScan
 from application.tag import tag
 
+import sys
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 

@@ -12,8 +12,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-NAME = u'反射型xss检测插件'
-VERSION = '1.0.6'
+NAME = u'XssScan'
+VERSION = '1.0.7'
 
 class BurpExtender(IBurpExtender, IScannerCheck):
 

@@ -4,6 +4,7 @@
 # 扫描类型配置项
 IS_SCAN_GET_START = True
 IS_SCAN_POST_START = True
+IS_SCAN_URL_PATH_FOLDERS = True
 
 # 匹配html标签dom节点
 # 例如: <a>xxx</a> <div>xxx</div> 匹配成功

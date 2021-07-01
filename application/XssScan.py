@@ -33,12 +33,6 @@ class XssScan():
         # 为空的话,也没必要进行xss检测了
         if not req_parameters:
             return
-        
-        # 判断是否get参数
-        # https://portswigger.net/burp/extender/api/burp/IScannerInsertionPoint.html
-        # insertionPoint支持的方法查看这里
-        if self.insertionPoint.getInsertionPointType() not in [0, 1]:
-            return
 
         # 获取响应的信息
         res_headers, res_status_code, res_stated_mime_type, res_bodys = self.getResponseInfo(self.baseRequestResponse.getResponse())
@@ -56,7 +50,7 @@ class XssScan():
         # 缺点: 可能会错过一些其他情况造成的“反射Xss”漏洞
         if res_stated_mime_type != 'HTML':
             return
-        
+
         # 初步xss检测
         if self.preliminaryXssScan() == False:
             return 

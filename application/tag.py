@@ -45,6 +45,7 @@ class tag(ITab):
         # 界面选项卡加载
         self.tag_1(c)
         self.tag_2(c)
+        self.tag_3(c)
 
         # 添加选项卡
         self.tabs.addTab(u'扫描类型设置', self.scan_type_settings)
@@ -63,14 +64,6 @@ class tag(ITab):
         c.gridy = 1
         self.scan_type_settings.add(self.is_scan_get_start_box, c)
 
-        # 在窗口添加一句话
-        is_scan_get_start_box_lbl = JLabel(u'打勾-启动, 不打勾-关闭')
-        self.setFontItalic(is_scan_get_start_box_lbl)
-        c.insets = Insets(5, 5, 5, 5)
-        c.gridx = 0
-        c.gridy = 2
-        self.scan_type_settings.add(is_scan_get_start_box_lbl, c)
-
     # 选项卡1-标签2-ui
     def tag_2(self, c):
         # 创建 检查框
@@ -79,16 +72,18 @@ class tag(ITab):
         self.is_scan_post_start_box.setForeground(Color(0, 0, 153))
         c.insets = Insets(5, 5, 5, 5)
         c.gridx = 0
-        c.gridy = 3
+        c.gridy = 2
         self.scan_type_settings.add(self.is_scan_post_start_box, c)
 
-        # 在窗口添加一句话
-        is_scan_post_start_box_lbl = JLabel(u'打勾-启动, 不打勾-关闭')
-        self.setFontItalic(is_scan_post_start_box_lbl)
+    def tag_3(self, c):
+        # 创建 检查框
+        self.is_scan_url_path_folders_box = JCheckBox(u'扫描URL路径作为参数', XssConfig.IS_SCAN_URL_PATH_FOLDERS)
+        self.setFontBold(self.is_scan_url_path_folders_box)
+        self.is_scan_url_path_folders_box.setForeground(Color(0, 0, 153))
         c.insets = Insets(5, 5, 5, 5)
         c.gridx = 0
-        c.gridy = 4
-        self.scan_type_settings.add(is_scan_post_start_box_lbl, c)
+        c.gridy = 3
+        self.scan_type_settings.add(self.is_scan_url_path_folders_box, c)
 
     def getScanTypeList(self):
         type_list = []
@@ -97,5 +92,8 @@ class tag(ITab):
             type_list.append(0)
         if self.is_scan_post_start_box.isSelected():
             type_list.append(1)
+        if self.is_scan_url_path_folders_box.isSelected():
+            type_list.append(33)
+            type_list.append(37)
 
         return type_list
